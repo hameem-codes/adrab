@@ -656,8 +656,8 @@ body, button, input, textarea, select { font-family: "Inter", ui-sans-serif, sys
   .mobile-nav-btn svg { width: 17px; height: 17px; }
   .topbar-profile-name, .topbar-profile-chevron { display: none; }
 }
-/ *   P a t i e n t s   t a b   a n d   P r o f i l e   s t y l e s   * /  
- /* --- Patients Tab & Profile --- */
+/* Patients tab and Profile styles */
+/* --- Patients Tab & Profile --- */
 .patients-wireframe { }
 .patient-summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 13px; }
 .patient-summary-card { display: flex; align-items: center; gap: 14px; min-height: 86px; padding: 18px 20px; border: 1px solid var(--border); border-radius: 9px; background: var(--paper); }
