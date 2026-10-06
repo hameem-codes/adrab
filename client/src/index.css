@@ -499,6 +499,13 @@ body, button, input, textarea, select { font-family: "Inter", ui-sans-serif, sys
 .patient-status { display: inline-flex; align-items: center; gap: 5px; min-width: 48px; padding: 4px 6px; border: 1px solid #c7e0d6; border-radius: 4px; background: #edf8f3; color: #227665; font-size: 8px; font-weight: 700; }
 .patient-status > span { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
 .patient-status-inactive { border-color: #dfe4e1; background: #f2f4f3; color: #7c8884; }
+.patient-status-new { border-color: #bee3f8; background: #ebf8ff; color: #2b6cb0; }
+.patient-status-follow-up { border-color: #fbd38d; background: #fffaf0; color: #c05621; }
+.patient-mobile-tabs { display: none; }
+.patient-profile-tabs { display: flex; gap: 18px; margin: 16px 0 20px; border-bottom: 1px solid #e1e7ea; }
+.patient-profile-tab { height: 38px; padding: 0 4px; border: 0; border-bottom: 2px solid transparent; background: transparent; color: #738491; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s ease; }
+.patient-profile-tab:hover { color: #213547; }
+.patient-profile-tab-active { border-bottom-color: var(--teal); color: var(--navy-dark); }
 .patient-table-footer { min-height: 48px; }
 .patient-table-footer .pagination { gap: 8px; }
 .pagination-current { display: inline-grid; width: 23px; height: 23px; place-items: center; border-radius: 4px; background: #e9f5f0; color: var(--teal); font-weight: 700; }
@@ -510,7 +517,7 @@ body, button, input, textarea, select { font-family: "Inter", ui-sans-serif, sys
 .patient-detail-identity strong { overflow: hidden; color: #243642; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
 .patient-detail-identity small { color: #82909a; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 7px; }
 .patient-detail-tabs { display: flex; gap: 14px; padding: 0 12px; border-bottom: 1px solid #e9edef; }
-.patient-detail-tab { height: 34px; padding: 0; border: 0; border-bottom: 2px solid transparent; background: transparent; color: #82909a; font-size: 8px; font-weight: 650; white-space: nowrap; }
+.patient-detail-tab { height: 34px; padding: 0; border: 0; border-bottom: 2px solid transparent; background: transparent; color: #82909a; font-size: 8px; font-weight: 650; white-space: nowrap; cursor: pointer; }
 .patient-detail-tab-active { border-bottom-color: var(--teal); color: #253d45; }
 .patient-info-block, .patient-scans-block, .patient-active-case { padding: 12px; border-bottom: 1px solid #e9edef; }
 .patient-info-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
@@ -624,6 +631,9 @@ body, button, input, textarea, select { font-family: "Inter", ui-sans-serif, sys
   .patient-mobile-copy small { overflow: hidden; color: #71818a; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 7px; text-overflow: ellipsis; white-space: nowrap; }
   .patient-mobile-copy em { color: #89979a; font-size: 7px; font-style: normal; }
   .patient-mobile-row .patient-status { min-width: 46px; padding: 4px 5px; font-size: 7px; }
+  .patient-mobile-tabs { display: flex; gap: 8px; padding: 8px 12px; background: #fff; border-bottom: 1px solid #e8edf0; overflow-x: auto; }
+  .patient-mobile-tab { padding: 6px 12px; border: 0; border-radius: 20px; background: #f0f4f6; color: #5a6e78; font-size: 11px; font-weight: 600; white-space: nowrap; cursor: pointer; }
+  .patient-mobile-tab-active { background: #e6f6f1; color: var(--teal); }
 
   /* Dashboard mobile layout additions */
   .dashboard-desktop-table { display: none; }

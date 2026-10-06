@@ -84,10 +84,16 @@ type Patient = {
   initials: string;
   name: string;
   age: number;
-  sex: string;
+  sex: "M" | "F";
+  phone: string;
+  email: string;
+  address: string;
+  bloodGroup: string;
+  allergies: string;
   procedure: string;
-  status: Status;
-  lastSeen: string;
+  status: "Active" | "Inactive" | "New" | "Follow-up";
+  activeCaseCount: number;
+  lastVisit: string;
   caseId: string;
   accent: string;
 };
@@ -107,19 +113,31 @@ type CaseRecord = {
 };
 
 const patients: Patient[] = [
-  { id: "PT-1048", initials: "AM", name: "Amina Mensah", age: 29, sex: "F", procedure: "Orbital floor reconstruction", status: "review", lastSeen: "Today, 09:42", caseId: "MX-2407", accent: "#d9a984" },
-  { id: "PT-1039", initials: "JC", name: "Jonah Carter", age: 41, sex: "M", procedure: "Le Fort I osteotomy", status: "active", lastSeen: "Today, 08:16", caseId: "MX-2399", accent: "#8fb1aa" },
-  { id: "PT-1021", initials: "SK", name: "Sara Khan", age: 34, sex: "F", procedure: "Zygomaticomaxillary complex", status: "complete", lastSeen: "Yesterday, 16:24", caseId: "MX-2374", accent: "#b6a2c8" },
-  { id: "PT-1017", initials: "DP", name: "Dario Petrov", age: 52, sex: "M", procedure: "Mandibular reconstruction", status: "attention", lastSeen: "Yesterday, 14:03", caseId: "MX-2361", accent: "#c8a66b" },
-  { id: "PT-0998", initials: "NT", name: "Nia Thompson", age: 26, sex: "F", procedure: "Nasal fracture repair", status: "complete", lastSeen: "04 Oct, 11:18", caseId: "MX-2310", accent: "#9da9c6" },
+  { id: "PT-2024-001", initials: "AV", name: "Aman Verma", age: 28, sex: "M", phone: "+91 98765 43210", email: "aman.verma@email.com", address: "Bangalore, Karnataka", bloodGroup: "O+", allergies: "Not specified", procedure: "Mandibular fracture", status: "Active", activeCaseCount: 1, lastVisit: "2 hours ago", caseId: "MF-2024-001", accent: "#dcefe9" },
+  { id: "PT-2024-002", initials: "PS", name: "Priya Sharma", age: 34, sex: "F", phone: "+91 87654 32109", email: "priya.sharma@email.com", address: "Mumbai, Maharashtra", bloodGroup: "B+", allergies: "Penicillin", procedure: "Zygomatic fracture", status: "Active", activeCaseCount: 2, lastVisit: "5 days ago", caseId: "MF-2024-002", accent: "#e7eeeb" },
+  { id: "PT-2024-003", initials: "RK", name: "Rohit Kumar", age: 26, sex: "M", phone: "+91 99887 77665", email: "rohit.k@email.com", address: "Delhi, NCR", bloodGroup: "A+", allergies: "None", procedure: "LeFort I", status: "Inactive", activeCaseCount: 1, lastVisit: "1 week ago", caseId: "MF-2024-003", accent: "#e7eeeb" },
+  { id: "PT-2024-004", initials: "SP", name: "Sneha Patel", age: 31, sex: "F", phone: "+91 91234 56780", email: "sneha.p@email.com", address: "Ahmedabad, Gujarat", bloodGroup: "AB+", allergies: "Latex", procedure: "Orbital fracture", status: "Active", activeCaseCount: 3, lastVisit: "2 hours ago", caseId: "MF-2024-004", accent: "#dcefe9" },
+  { id: "PT-2024-005", initials: "VS", name: "Vikram Singh", age: 40, sex: "M", phone: "+91 88776 55443", email: "vikram.s@email.com", address: "Jaipur, Rajasthan", bloodGroup: "O-", allergies: "None", procedure: "Mandibular reconstruction", status: "Active", activeCaseCount: 1, lastVisit: "3 days ago", caseId: "MF-2024-005", accent: "#dcefe9" },
+  { id: "PT-2024-006", initials: "NR", name: "Neha Reddy", age: 29, sex: "F", phone: "+91 99876 12345", email: "neha.reddy@email.com", address: "Hyderabad, Telangana", bloodGroup: "B+", allergies: "Sulfa drugs", procedure: "Nasal fracture repair", status: "Inactive", activeCaseCount: 1, lastVisit: "1 week ago", caseId: "MF-2024-006", accent: "#e7eeeb" },
+  { id: "PT-2024-007", initials: "AD", name: "Arjun Das", age: 33, sex: "M", phone: "+91 87654 99887", email: "arjun.das@email.com", address: "Kolkata, West Bengal", bloodGroup: "O+", allergies: "None", procedure: "Zygomaticomaxillary complex", status: "Active", activeCaseCount: 2, lastVisit: "5 days ago", caseId: "MF-2024-007", accent: "#dcefe9" },
+  { id: "PT-2024-008", initials: "KM", name: "Karan Mehta", age: 27, sex: "M", phone: "+91 98989 77654", email: "karan.mehta@email.com", address: "Pune, Maharashtra", bloodGroup: "A-", allergies: "None", procedure: "Orbital floor reconstruction", status: "Inactive", activeCaseCount: 0, lastVisit: "2 weeks ago", caseId: "MF-2024-008", accent: "#e7eeeb" },
+  { id: "PT-2024-009", initials: "ST", name: "Sana Thomas", age: 32, sex: "F", phone: "+91 91234 66778", email: "sana.thomas@email.com", address: "Kochi, Kerala", bloodGroup: "B-", allergies: "Aspirin", procedure: "LeFort I", status: "Active", activeCaseCount: 1, lastVisit: "3 days ago", caseId: "MF-2024-009", accent: "#dcefe9" },
+  { id: "PT-2024-010", initials: "MK", name: "Mohammed Khan", age: 36, sex: "M", phone: "+91 87876 55432", email: "m.khan@email.com", address: "Chennai, Tamil Nadu", bloodGroup: "AB-", allergies: "None", procedure: "Mandibular fracture", status: "Active", activeCaseCount: 2, lastVisit: "1 week ago", caseId: "MF-2024-010", accent: "#dcefe9" },
+  { id: "PT-1048", initials: "AM", name: "Amina Mensah", age: 29, sex: "F", phone: "+44 7700 900148", email: "amina.m@email.com", address: "London, UK", bloodGroup: "O+", allergies: "None recorded", procedure: "Orbital floor reconstruction", status: "Active", activeCaseCount: 1, lastVisit: "Today, 09:42", caseId: "MX-2407", accent: "#d9a984" },
 ];
 
 const cases: CaseRecord[] = [
-  { id: "MX-2407", patientId: "PT-1048", patient: "Amina Mensah", procedure: "Orbital floor reconstruction", phase: "After · Review", score: 8.8, confidence: 94, status: "review", updated: "12 min ago", priority: "Review today", evaluator: "Dr. Okafor" },
-  { id: "MX-2399", patientId: "PT-1039", patient: "Jonah Carter", procedure: "Le Fort I osteotomy", phase: "Surgery · Plan", score: 8.2, confidence: 89, status: "active", updated: "1 hr ago", priority: "Routine", evaluator: "Dr. Lee" },
-  { id: "MX-2374", patientId: "PT-1021", patient: "Sara Khan", procedure: "Zygomaticomaxillary complex", phase: "Evaluation · Complete", score: 9.4, confidence: 97, status: "complete", updated: "Yesterday", priority: "Routine", evaluator: "Dr. Okafor" },
-  { id: "MX-2361", patientId: "PT-1017", patient: "Dario Petrov", procedure: "Mandibular reconstruction", phase: "Before · Findings", score: 6.9, confidence: 72, status: "attention", updated: "Yesterday", priority: "Escalated", evaluator: "Dr. Sato" },
-  { id: "MX-2310", patientId: "PT-0998", patient: "Nia Thompson", procedure: "Nasal fracture repair", phase: "Evaluation · Complete", score: 9.1, confidence: 95, status: "complete", updated: "04 Oct", priority: "Routine", evaluator: "Dr. Lee" },
+  { id: "MF-2024-001", patientId: "PT-2024-001", patient: "Aman Verma", procedure: "Mandibular Fracture", phase: "Evaluation · Outcome", score: 8.2, confidence: 91, status: "active", updated: "2 hours ago", priority: "Routine", evaluator: "Dr. Rahul Mehta" },
+  { id: "MF-2024-002", patientId: "PT-2024-002", patient: "Priya Sharma", procedure: "Zygomatic Fracture", phase: "Post-op · Verification", score: 7.8, confidence: 88, status: "active", updated: "5 hours ago", priority: "Routine", evaluator: "Dr. Rahul Mehta" },
+  { id: "MF-2024-003", patientId: "PT-2024-003", patient: "Rohit Kumar", procedure: "LeFort I", phase: "Pre-op · Intake", score: 7.5, confidence: 82, status: "draft", updated: "1 day ago", priority: "Routine", evaluator: "Dr. Sarah Lee" },
+  { id: "MF-2024-004", patientId: "PT-2024-004", patient: "Sneha Patel", procedure: "Orbital Fracture", phase: "Review · Attention", score: 6.8, confidence: 79, status: "attention", updated: "1 day ago", priority: "Escalated", evaluator: "Dr. Elena Okafor" },
+  { id: "MF-2024-005", patientId: "PT-2024-005", patient: "Vikram Singh", procedure: "Mandibular Fracture", phase: "Evaluation · Complete", score: 9.1, confidence: 96, status: "complete", updated: "2 days ago", priority: "Routine", evaluator: "Dr. Rahul Mehta" },
+  { id: "MF-2024-006", patientId: "PT-2024-006", patient: "Neha Reddy", procedure: "Zygomatic Fracture", phase: "Pre-op · Planning", score: 7.0, confidence: 80, status: "draft", updated: "2 days ago", priority: "Routine", evaluator: "Dr. Sarah Lee" },
+  { id: "MF-2024-007", patientId: "PT-2024-007", patient: "Arjun Das", procedure: "LeFort I", phase: "Post-op · Outcome", score: 8.4, confidence: 93, status: "review", updated: "4 days ago", priority: "Review today", evaluator: "Dr. Elena Okafor" },
+  { id: "MF-2024-008", patientId: "PT-2024-008", patient: "Karan Mehta", procedure: "Orbital Fracture", phase: "Review · Clinician input", score: 7.2, confidence: 84, status: "review", updated: "5 days ago", priority: "Review today", evaluator: "Dr. Rahul Mehta" },
+  { id: "MF-2024-009", patientId: "PT-2024-009", patient: "Sana Thomas", procedure: "Mandibular Fracture", phase: "Evaluation · Complete", score: 8.8, confidence: 95, status: "complete", updated: "1 week ago", priority: "Routine", evaluator: "Dr. Elena Okafor" },
+  { id: "MF-2024-010", patientId: "PT-2024-010", patient: "Mohammed Khan", procedure: "Zygomatic Fracture", phase: "Pre-op · Intake", score: 7.4, confidence: 81, status: "draft", updated: "1 week ago", priority: "Routine", evaluator: "Dr. Sarah Lee" },
+  { id: "MX-2407", patientId: "PT-1048", patient: "Amina Mensah", procedure: "Orbital floor reconstruction", phase: "After · Review", score: 8.8, confidence: 94, status: "review", updated: "12 min ago", priority: "Review today", evaluator: "Dr. Elena Okafor" },
 ];
 
 const scoreTrend = [
@@ -609,39 +627,973 @@ function PatientsPage() {
   const [, navigate] = useLocation();
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
-  const [selectedId, setSelectedId] = useState("PT-1048");
-  const registryRows = [
-    { id: "PT-2024-001", initials: "AV", name: "Aman Verma", ageSex: "28 / M", phone: "+91 98765 43210", cases: 1, lastVisit: "2 hours ago", status: "Active", procedure: "Mandibular fracture", accent: "#dcefe9" },
-    { id: "PT-2024-002", initials: "PS", name: "Priya Sharma", ageSex: "34 / F", phone: "+91 87654 32109", cases: 2, lastVisit: "5 days ago", status: "Active", procedure: "Zygomatic fracture", accent: "#e7eeeb" },
-    { id: "PT-2024-003", initials: "RK", name: "Rohit Kumar", ageSex: "26 / M", phone: "+91 99887 77665", cases: 1, lastVisit: "1 week ago", status: "Inactive", procedure: "LeFort I", accent: "#e7eeeb" },
-    { id: "PT-2024-004", initials: "SP", name: "Sneha Patel", ageSex: "31 / F", phone: "+91 91234 56780", cases: 3, lastVisit: "2 hours ago", status: "Active", procedure: "Orbital fracture", accent: "#dcefe9" },
-    { id: "PT-2024-005", initials: "VS", name: "Vikram Singh", ageSex: "40 / M", phone: "+91 88776 55443", cases: 1, lastVisit: "3 days ago", status: "Active", procedure: "Mandibular reconstruction", accent: "#dcefe9" },
-    { id: "PT-2024-006", initials: "NR", name: "Neha Reddy", ageSex: "29 / F", phone: "+91 99876 12345", cases: 1, lastVisit: "1 week ago", status: "Inactive", procedure: "Nasal fracture repair", accent: "#e7eeeb" },
-    { id: "PT-2024-007", initials: "AD", name: "Arjun Das", ageSex: "33 / M", phone: "+91 87654 99887", cases: 2, lastVisit: "5 days ago", status: "Active", procedure: "Zygomaticomaxillary complex", accent: "#dcefe9" },
-    { id: "PT-2024-008", initials: "KM", name: "Karan Mehta", ageSex: "27 / M", phone: "+91 98989 77654", cases: 0, lastVisit: "2 weeks ago", status: "Inactive", procedure: "Orbital floor reconstruction", accent: "#e7eeeb" },
-    { id: "PT-2024-009", initials: "ST", name: "Sana Thomas", ageSex: "32 / F", phone: "+91 91234 66778", cases: 1, lastVisit: "3 days ago", status: "Active", procedure: "LeFort I", accent: "#dcefe9" },
-    { id: "PT-2024-010", initials: "MK", name: "Mohammed Khan", ageSex: "36 / M", phone: "+91 87654 55322", cases: 2, lastVisit: "1 week ago", status: "Active", procedure: "Mandibular fracture", accent: "#dcefe9" },
-  ];
-  const filtered = registryRows.filter((patient) => `${patient.name} ${patient.id} ${patient.phone} ${patient.procedure}`.toLowerCase().includes(query.toLowerCase()) && (statusFilter === "All" || patient.status === statusFilter));
+  const [procedureFilter, setProcedureFilter] = useState("Procedure");
+  const [dateFilter, setDateFilter] = useState("Date Range");
+  const [selectedId, setSelectedId] = useState("PT-2024-001");
+  const [selectedRows, setSelectedRows] = useState<string[]>([]);
+  const [mobileStatusTab, setMobileStatusTab] = useState<"All" | "Active" | "Inactive">("All");
+
+  const registryRows = patients.map((p) => ({
+    id: p.id,
+    initials: p.initials,
+    name: p.name,
+    ageSex: `${p.age} / ${p.sex}`,
+    phone: p.phone,
+    email: p.email,
+    address: p.address,
+    bloodGroup: p.bloodGroup,
+    allergies: p.allergies,
+    cases: p.activeCaseCount,
+    lastVisit: p.lastVisit,
+    status: p.status,
+    procedure: p.procedure,
+    caseId: p.caseId,
+    accent: p.accent,
+  }));
+
+  const filtered = registryRows.filter((patient) => {
+    const matchesQuery = `${patient.name} ${patient.id} ${patient.phone} ${patient.procedure} ${patient.email}`
+      .toLowerCase()
+      .includes(query.toLowerCase());
+    const matchesStatus = statusFilter === "All" || patient.status === statusFilter;
+    const matchesMobileStatus = mobileStatusTab === "All" || patient.status === mobileStatusTab;
+    const matchesProcedure = procedureFilter === "Procedure" || patient.procedure.toLowerCase().includes(procedureFilter.toLowerCase());
+    return matchesQuery && matchesStatus && matchesMobileStatus && matchesProcedure;
+  });
+
   const selected = registryRows.find((patient) => patient.id === selectedId) ?? registryRows[0];
   const selectPatient = (id: string) => setSelectedId(id);
-  return <div className="patients-wireframe"><PageHeader eyebrow="Patient management" title="Patients" description="Manage patient records, view history and associated cases" actions={<button className="button button-primary" onClick={() => toast("New patient", { description: "Patient intake is staged for the full application." })}><Plus size={15} /> New Patient</button>} /><div className="patient-summary-grid"><PatientSummaryCard icon={UsersRound} label="Total Patients" value="86" detail="10% vs last month" /><PatientSummaryCard icon={UserRound} label="New Patients" value="12" detail="20% vs last month" /><PatientSummaryCard icon={HeartPulse} label="With Active Cases" value="34" detail="6% vs last month" /><PatientSummaryCard icon={CheckCircle2} label="Completed Cases" value="52" detail="18% vs last month" /></div><div className="patients-main-grid"><section className="panel patient-registry-panel"><div className="patient-filter-row"><div className="inline-search patient-search"><Search size={16} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search patients..." /></div><select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)} aria-label="Filter by status"><option>All</option><option>Active</option><option>Inactive</option></select><select aria-label="Filter by procedure"><option>Procedure</option><option>Orbital fracture</option><option>Mandibular fracture</option></select><select aria-label="Filter by date range"><option>Date Range</option><option>Last 7 days</option><option>Last 30 days</option></select><button className="button button-quiet patient-clear" onClick={() => { setQuery(""); setStatusFilter("All"); }}>Clear</button></div><div className="patient-table-scroll"><table className="clinical-table patient-wire-table"><thead><tr><th><input type="checkbox" aria-label="Select all patients" /></th><th>Patient ID</th><th>Name</th><th>Age / Sex</th><th>Contact</th><th>Active Cases</th><th>Last Visit</th><th>Status</th><th>Actions</th></tr></thead><tbody>{filtered.map((patient) => <tr key={patient.id} className={selectedId === patient.id ? "patient-row-selected" : ""} onClick={() => selectPatient(patient.id)}><td><input type="checkbox" checked={selectedId === patient.id} onChange={() => selectPatient(patient.id)} onClick={(event) => event.stopPropagation()} aria-label={`Select ${patient.name}`} /></td><td><span className="case-key">{patient.id}</span></td><td><strong>{patient.name}</strong></td><td>{patient.ageSex}</td><td><span className="patient-contact">{patient.phone}</span></td><td>{patient.cases}</td><td><span className="updated-cell">{patient.lastVisit}</span></td><td><span className={`patient-status patient-status-${patient.status.toLowerCase()}`}><span />{patient.status}</span></td><td><button className="icon-button small" onClick={(event) => { event.stopPropagation(); navigate("/patients/PT-1048"); }}><MoreHorizontal size={15} /></button></td></tr>)}</tbody></table></div><div className="patient-mobile-list">{filtered.map((patient) => <button className={`patient-mobile-row ${selectedId === patient.id ? "patient-mobile-row-selected" : ""}`} key={patient.id} onClick={() => selectPatient(patient.id)}><span className="avatar patient-mobile-avatar">{patient.initials}</span><span className="patient-mobile-copy"><strong>{patient.name}</strong><small>{patient.id} · {patient.ageSex}</small><em>{patient.cases ? `${patient.cases} active case${patient.cases > 1 ? "s" : ""}` : "No active cases"}</em></span><span className={`patient-status patient-status-${patient.status.toLowerCase()}`}>{patient.status}</span><MoreHorizontal size={15} /></button>)}</div><div className="table-footer patient-table-footer"><span>Showing 1–{filtered.length} of 86 patients</span><span className="pagination"><button className="icon-button small"><ChevronLeft size={14} /></button><span className="pagination-current">1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>…</span><button className="icon-button small"><ChevronRight size={14} /></button><span>10 / page <ChevronDown size={12} /></span></span></div></section><PatientDetailPanel patient={selected} onOpen={() => navigate("/patients/PT-1048")} /></div><section className="patient-quick-actions"><div><strong>Quick Actions</strong><span>Common tasks for this section</span></div><QuickAction icon={Plus} label="New Patient" detail="Create a new patient record" onClick={() => toast("New patient", { description: "Patient intake is staged for the full application." })} /><QuickAction icon={Download} label="Import Patients" detail="Upload from CSV" onClick={() => toast("Import patients", { description: "CSV import is staged for the full application." })} /><QuickAction icon={UsersRound} label="Merge Records" detail="Merge duplicate patients" onClick={() => toast("Merge records", { description: "Duplicate review is staged for the full application." })} /><QuickAction icon={Target} label="Manage Tags" detail="Organize patient groups" onClick={() => toast("Manage tags", { description: "Tag management is staged for the full application." })} /></section></div>;
+
+  const toggleSelectRow = (id: string, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    setSelectedRows((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedRows.length === filtered.length) {
+      setSelectedRows([]);
+    } else {
+      setSelectedRows(filtered.map((p) => p.id));
+    }
+  };
+
+  const handleClear = () => {
+    setQuery("");
+    setStatusFilter("All");
+    setProcedureFilter("Procedure");
+    setDateFilter("Date Range");
+    setMobileStatusTab("All");
+  };
+
+  return (
+    <div className="patients-wireframe">
+      <PageHeader
+        eyebrow="Patient management"
+        title="Patients"
+        description="Manage patient records, view history and associated cases"
+        actions={
+          <button
+            className="button button-primary"
+            onClick={() => toast("New Patient", { description: "Patient intake flow initiated. Enter clinical demographics to begin." })}
+          >
+            <Plus size={15} /> New Patient
+          </button>
+        }
+      />
+
+      <div className="patient-summary-grid">
+        <PatientSummaryCard icon={UsersRound} label="Total Patients" value="86" detail="10%" />
+        <PatientSummaryCard icon={UserRound} label="New Patients" value="12" detail="20%" />
+        <PatientSummaryCard icon={HeartPulse} label="With Active Cases" value="34" detail="6%" />
+        <PatientSummaryCard icon={CheckCircle2} label="Completed Cases" value="52" detail="18%" />
+      </div>
+
+      <div className="patients-main-grid">
+        <section className="panel patient-registry-panel">
+          <div className="patient-filter-row">
+            <div className="inline-search patient-search">
+              <Search size={16} />
+              <input
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Search patients by name, ID, phone or email..."
+              />
+            </div>
+            <select
+              value={statusFilter}
+              onChange={(event) => setStatusFilter(event.target.value)}
+              aria-label="Filter by status"
+            >
+              <option value="All">Status: All</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+              <option value="New">New</option>
+              <option value="Follow-up">Follow-up</option>
+            </select>
+            <select
+              value={procedureFilter}
+              onChange={(event) => setProcedureFilter(event.target.value)}
+              aria-label="Filter by procedure"
+            >
+              <option value="Procedure">Procedure</option>
+              <option value="Orbital">Orbital fracture</option>
+              <option value="Mandibular">Mandibular fracture</option>
+              <option value="Zygomatic">Zygomatic fracture</option>
+              <option value="LeFort">LeFort I</option>
+            </select>
+            <select
+              value={dateFilter}
+              onChange={(event) => setDateFilter(event.target.value)}
+              aria-label="Filter by date range"
+            >
+              <option value="Date Range">Date Range</option>
+              <option value="Last 7 days">Last 7 days</option>
+              <option value="Last 30 days">Last 30 days</option>
+            </select>
+            <button className="button button-quiet patient-clear" onClick={handleClear}>
+              Clear
+            </button>
+          </div>
+
+          {/* Mobile status tabs */}
+          <div className="patient-mobile-tabs" role="tablist" aria-label="Filter by status mobile">
+            <button
+              className={`patient-mobile-tab ${mobileStatusTab === "All" ? "patient-mobile-tab-active" : ""}`}
+              onClick={() => setMobileStatusTab("All")}
+            >
+              All 86
+            </button>
+            <button
+              className={`patient-mobile-tab ${mobileStatusTab === "Active" ? "patient-mobile-tab-active" : ""}`}
+              onClick={() => setMobileStatusTab("Active")}
+            >
+              Active 34
+            </button>
+            <button
+              className={`patient-mobile-tab ${mobileStatusTab === "Inactive" ? "patient-mobile-tab-active" : ""}`}
+              onClick={() => setMobileStatusTab("Inactive")}
+            >
+              Inactive 52
+            </button>
+          </div>
+
+          {filtered.length === 0 ? (
+            <div style={{ padding: "40px 20px" }}>
+              <EmptyState
+                icon={UsersRound}
+                title="No patients found"
+                description="No patient records match the currently applied search and filters."
+              />
+              <div style={{ textAlign: "center", marginTop: "16px" }}>
+                <button className="button button-quiet" onClick={handleClear}>
+                  Clear Filters
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="patient-table-scroll">
+                <table className="clinical-table patient-wire-table">
+                  <thead>
+                    <tr>
+                      <th>
+                        <input
+                          type="checkbox"
+                          checked={selectedRows.length === filtered.length && filtered.length > 0}
+                          onChange={toggleSelectAll}
+                          aria-label="Select all patients"
+                        />
+                      </th>
+                      <th>Patient ID</th>
+                      <th>Name</th>
+                      <th>Age / Sex</th>
+                      <th>Contact</th>
+                      <th>Active Cases</th>
+                      <th>Last Visit</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filtered.map((patient) => (
+                      <tr
+                        key={patient.id}
+                        className={selectedId === patient.id ? "patient-row-selected" : ""}
+                        onClick={() => selectPatient(patient.id)}
+                      >
+                        <td>
+                          <input
+                            type="checkbox"
+                            checked={selectedRows.includes(patient.id)}
+                            onChange={() => toggleSelectRow(patient.id)}
+                            onClick={(event) => event.stopPropagation()}
+                            aria-label={`Select ${patient.name}`}
+                          />
+                        </td>
+                        <td>
+                          <button
+                            className="case-key text-button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/patients/${patient.id}`);
+                            }}
+                          >
+                            {patient.id}
+                          </button>
+                        </td>
+                        <td>
+                          <button
+                            className="text-button"
+                            style={{ fontWeight: 600, color: "var(--navy-dark)" }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/patients/${patient.id}`);
+                            }}
+                          >
+                            {patient.name}
+                          </button>
+                        </td>
+                        <td>{patient.ageSex}</td>
+                        <td>
+                          <span className="patient-contact">{patient.phone}</span>
+                        </td>
+                        <td>{patient.cases}</td>
+                        <td>
+                          <span className="updated-cell">{patient.lastVisit}</span>
+                        </td>
+                        <td>
+                          <span className={`patient-status patient-status-${patient.status.toLowerCase().replace(" ", "-")}`}>
+                            <span />
+                            {patient.status}
+                          </span>
+                        </td>
+                        <td>
+                          <button
+                            className="icon-button small"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              navigate(`/patients/${patient.id}`);
+                            }}
+                            title="Open Patient Profile"
+                          >
+                            <MoreHorizontal size={15} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Mobile patient list representation */}
+              <div className="patient-mobile-list">
+                {filtered.map((patient) => (
+                  <button
+                    className={`patient-mobile-row ${selectedId === patient.id ? "patient-mobile-row-selected" : ""}`}
+                    key={patient.id}
+                    onClick={() => navigate(`/patients/${patient.id}`)}
+                  >
+                    <span className="avatar patient-mobile-avatar" style={{ background: patient.accent }}>
+                      {patient.initials}
+                    </span>
+                    <span className="patient-mobile-copy">
+                      <strong>{patient.name}</strong>
+                      <small>
+                        {patient.id} · {patient.ageSex}
+                      </small>
+                      <em>{patient.cases ? `${patient.cases} active case${patient.cases > 1 ? "s" : ""}` : "No active cases"}</em>
+                    </span>
+                    <span className={`patient-status patient-status-${patient.status.toLowerCase().replace(" ", "-")}`}>
+                      {patient.status}
+                    </span>
+                    <ChevronRight size={15} />
+                  </button>
+                ))}
+              </div>
+
+              <div className="table-footer patient-table-footer">
+                <span>Showing 1–{filtered.length} of 86 patients</span>
+                <span className="pagination">
+                  <button className="icon-button small">
+                    <ChevronLeft size={14} />
+                  </button>
+                  <span className="pagination-current">1</span>
+                  <span>2</span>
+                  <span>3</span>
+                  <span>4</span>
+                  <span>5</span>
+                  <span>…</span>
+                  <span>9</span>
+                  <button className="icon-button small">
+                    <ChevronRight size={14} />
+                  </button>
+                  <span>
+                    10 / page <ChevronDown size={12} />
+                  </span>
+                </span>
+              </div>
+            </>
+          )}
+        </section>
+
+        {selected && (
+          <PatientDetailPanel
+            patient={selected}
+            onOpen={() => navigate(`/patients/${selected.id}`)}
+            onOpenCase={(caseId) => navigate(`/cases/${caseId}`)}
+          />
+        )}
+      </div>
+
+      <section className="patient-quick-actions">
+        <div>
+          <strong>Quick Actions</strong>
+          <span>Common tasks for this section</span>
+        </div>
+        <QuickAction
+          icon={Plus}
+          label="New Patient"
+          detail="Create a new patient record"
+          onClick={() => toast("New Patient", { description: "Patient intake flow initialized." })}
+        />
+        <QuickAction
+          icon={Download}
+          label="Import Patients"
+          detail="Upload from CSV"
+          onClick={() => toast("Import Patients", { description: "CSV upload modal ready for patient batch import." })}
+        />
+        <QuickAction
+          icon={UsersRound}
+          label="Merge Records"
+          detail="Merge duplicate patients"
+          onClick={() => toast("Merge Records", { description: "Select duplicate records to reconcile patient files." })}
+        />
+        <QuickAction
+          icon={Target}
+          label="Manage Tags"
+          detail="Organize patient groups"
+          onClick={() => toast("Manage Tags", { description: "Cohort tag management opened." })}
+        />
+      </section>
+    </div>
+  );
 }
 
-function PatientSummaryCard({ icon: IconComponent, label, value, detail }: { icon: Icon; label: string; value: string; detail: string }) {
-  return <div className="patient-summary-card"><span className="patient-summary-icon"><IconComponent size={18} /></span><div><span>{label}</span><strong>{value}</strong><small><ArrowUpRight size={11} /> {detail}</small><em>vs last month</em></div></div>;
+function PatientSummaryCard({
+  icon: IconComponent,
+  label,
+  value,
+  detail,
+}: {
+  icon: Icon;
+  label: string;
+  value: string;
+  detail: string;
+}) {
+  return (
+    <div className="patient-summary-card">
+      <span className="patient-summary-icon">
+        <IconComponent size={18} />
+      </span>
+      <div>
+        <span>{label}</span>
+        <strong>{value}</strong>
+        <small>
+          <ArrowUpRight size={11} /> {detail}
+        </small>
+        <em>vs last month</em>
+      </div>
+    </div>
+  );
 }
 
-function PatientDetailPanel({ patient, onOpen }: { patient: { id: string; initials: string; name: string; ageSex: string; phone: string; cases: number; status: string; procedure: string; accent: string }; onOpen: () => void }) {
-  return <aside className="panel patient-detail-panel"><div className="patient-detail-head"><div className="patient-detail-identity"><div className="avatar patient-detail-avatar">{patient.initials}</div><div><strong>{patient.name}</strong><small>{patient.id} · {patient.ageSex}</small></div></div><StatusPill status={patient.status === "Active" ? "active" : "draft"} compact /><MoreHorizontal size={15} /></div><div className="patient-detail-tabs"><button className="patient-detail-tab patient-detail-tab-active">Overview</button><button className="patient-detail-tab">Cases</button><button className="patient-detail-tab">Scans</button><button className="patient-detail-tab">Evaluations</button><button className="patient-detail-tab">…</button></div><div className="patient-info-block"><div className="patient-info-heading"><strong>Patient Information</strong><button className="text-button" onClick={onOpen}>Edit</button></div><div className="patient-info-list"><InfoPair label="Full Name" value={patient.name} /><InfoPair label="Patient ID" value={patient.id} mono /><InfoPair label="Age / Sex" value={patient.ageSex} /><InfoPair label="Phone" value={patient.phone} /><InfoPair label="Email" value="aman.verma@email.com" /><InfoPair label="Address" value="Bangalore, Karnataka" /><InfoPair label="Blood Group" value="O+" /><InfoPair label="Allergies" value="Not specified" /></div></div><div className="patient-scans-block"><div className="patient-info-heading"><strong>Recent Scans</strong><button className="text-button">View all</button></div><div className="patient-scan-grid"><ImagingMini label="Pre-op CT" accent="slate" /><ImagingMini label="Post-op CT" accent="teal" after /><ImagingMini label="3D Reconstruction" accent="slate" after /></div></div><div className="patient-active-case"><div className="patient-info-heading"><strong>Active Cases ({patient.cases})</strong><button className="text-button">View all</button></div><button className="patient-case-card" onClick={onOpen}><span className="patient-case-thumb"><ImagingMini label="" accent="teal" /></span><span><strong>MF-2024-001</strong><small>{patient.procedure}</small><em>Created 10 Jul 2024 · Last updated 2 hours ago</em></span><StageBadge label="Evaluation" tone="evaluation" /></button></div></aside>;
+function PatientDetailPanel({
+  patient,
+  onOpen,
+  onOpenCase,
+}: {
+  patient: {
+    id: string;
+    initials: string;
+    name: string;
+    ageSex: string;
+    phone: string;
+    email: string;
+    address: string;
+    bloodGroup: string;
+    allergies: string;
+    cases: number;
+    status: string;
+    procedure: string;
+    caseId: string;
+    accent: string;
+  };
+  onOpen: () => void;
+  onOpenCase: (caseId: string) => void;
+}) {
+  const [subtab, setSubtab] = useState<"Overview" | "Cases" | "Scans" | "Evaluations" | "Reports">("Overview");
+
+  return (
+    <aside className="panel patient-detail-panel">
+      <div className="patient-detail-head">
+        <div className="patient-detail-identity">
+          <div className="avatar patient-detail-avatar" style={{ background: patient.accent }}>
+            {patient.initials}
+          </div>
+          <div>
+            <strong>{patient.name}</strong>
+            <small>
+              {patient.id} · {patient.ageSex}
+            </small>
+          </div>
+        </div>
+        <span className={`patient-status patient-status-${patient.status.toLowerCase().replace(" ", "-")}`}>
+          <span />
+          {patient.status}
+        </span>
+        <button className="icon-button small" onClick={onOpen} title="More actions">
+          <MoreHorizontal size={15} />
+        </button>
+      </div>
+
+      <div className="patient-detail-tabs">
+        {(["Overview", "Cases", "Scans", "Evaluations", "Reports"] as const).map((t) => (
+          <button
+            key={t}
+            className={`patient-detail-tab ${subtab === t ? "patient-detail-tab-active" : ""}`}
+            onClick={() => setSubtab(t)}
+          >
+            {t}
+          </button>
+        ))}
+      </div>
+
+      {subtab === "Overview" && (
+        <>
+          <div className="patient-info-block">
+            <div className="patient-info-heading">
+              <strong>Patient Information</strong>
+              <button
+                className="text-button"
+                onClick={() => toast("Edit Patient", { description: `Editing details for ${patient.name}` })}
+              >
+                Edit
+              </button>
+            </div>
+            <div className="patient-info-list">
+              <InfoPair label="Full Name" value={patient.name} />
+              <InfoPair label="Patient ID" value={patient.id} mono />
+              <InfoPair label="Age / Sex" value={patient.ageSex} />
+              <InfoPair label="Phone" value={patient.phone} />
+              <InfoPair label="Email" value={patient.email} />
+              <InfoPair label="Address" value={patient.address} />
+              <InfoPair label="Blood Group" value={patient.bloodGroup} />
+              <InfoPair label="Allergies" value={patient.allergies} />
+            </div>
+          </div>
+
+          <div className="patient-scans-block">
+            <div className="patient-info-heading">
+              <strong>Recent Scans</strong>
+              <button className="text-button" onClick={() => setSubtab("Scans")}>
+                View all →
+              </button>
+            </div>
+            <div className="patient-scan-grid">
+              <div onClick={() => toast("DICOM Viewer", { description: "Opening Pre-op CT in 3D volume viewer" })} style={{ cursor: "pointer" }}>
+                <ImagingMini label="Pre-op CT" accent="slate" />
+              </div>
+              <div onClick={() => toast("DICOM Viewer", { description: "Opening Post-op CT in 3D volume viewer" })} style={{ cursor: "pointer" }}>
+                <ImagingMini label="Post-op CT" accent="teal" after />
+              </div>
+              <div onClick={() => toast("DICOM Viewer", { description: "Opening 3D Reconstruction mesh" })} style={{ cursor: "pointer" }}>
+                <ImagingMini label="3D Recon." accent="slate" after />
+              </div>
+            </div>
+          </div>
+
+          <div className="patient-active-case">
+            <div className="patient-info-heading">
+              <strong>Active Cases ({patient.cases})</strong>
+              <button className="text-button" onClick={() => setSubtab("Cases")}>
+                View all →
+              </button>
+            </div>
+            {patient.cases > 0 ? (
+              <button className="patient-case-card" onClick={() => onOpenCase(patient.caseId)}>
+                <span className="patient-case-thumb">
+                  <ImagingMini label="" accent="teal" />
+                </span>
+                <span>
+                  <strong>{patient.caseId}</strong>
+                  <small>{patient.procedure}</small>
+                  <em>Created 10 Jul 2024 · Last updated 2 hours ago</em>
+                </span>
+                <StageBadge label="Evaluation" tone="evaluation" />
+              </button>
+            ) : (
+              <div style={{ padding: "12px 0", color: "var(--text-muted)", fontSize: "11px" }}>
+                No active trauma cases currently staged.
+              </div>
+            )}
+          </div>
+        </>
+      )}
+
+      {subtab === "Cases" && (
+        <div className="patient-info-block">
+          <div className="patient-info-heading">
+            <strong>Case History ({patient.cases})</strong>
+            <button
+              className="text-button"
+              onClick={() => toast("New Case", { description: `Linking new case to ${patient.name}` })}
+            >
+              + Add Case
+            </button>
+          </div>
+          {patient.cases > 0 ? (
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              <button className="patient-case-card" onClick={() => onOpenCase(patient.caseId)}>
+                <span className="patient-case-thumb">
+                  <ImagingMini label="" accent="teal" />
+                </span>
+                <span>
+                  <strong>{patient.caseId}</strong>
+                  <small>{patient.procedure}</small>
+                  <em>Created 10 Jul 2024 · Last updated 2 hours ago</em>
+                </span>
+                <StageBadge label="Evaluation" tone="evaluation" />
+              </button>
+            </div>
+          ) : (
+            <p style={{ fontSize: "11px", color: "var(--text-muted)" }}>No previous surgical cases recorded.</p>
+          )}
+        </div>
+      )}
+
+      {subtab === "Scans" && (
+        <div className="patient-info-block">
+          <div className="patient-info-heading">
+            <strong>Diagnostic Series</strong>
+            <button className="text-button" onClick={() => toast("Upload DICOM", { description: "Select scan directory" })}>
+              + Upload
+            </button>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+            <div onClick={() => toast("DICOM Viewer", { description: "Pre-op Axial scan (0.625mm)" })} style={{ cursor: "pointer" }}>
+              <ImagingMini label="Pre-op Axial" accent="slate" />
+            </div>
+            <div onClick={() => toast("DICOM Viewer", { description: "Pre-op Coronal slice" })} style={{ cursor: "pointer" }}>
+              <ImagingMini label="Pre-op Coronal" accent="teal" />
+            </div>
+            <div onClick={() => toast("DICOM Viewer", { description: "Post-op Helical CT" })} style={{ cursor: "pointer" }}>
+              <ImagingMini label="Post-op CT" accent="teal" after />
+            </div>
+            <div onClick={() => toast("DICOM Viewer", { description: "3D Surface Model STL" })} style={{ cursor: "pointer" }}>
+              <ImagingMini label="3D Volume" accent="slate" after />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {subtab === "Evaluations" && (
+        <div className="patient-info-block">
+          <div className="patient-info-heading">
+            <strong>Outcome Evaluations</strong>
+          </div>
+          <div style={{ background: "#f8fbfa", border: "1px solid #dcefe9", borderRadius: "6px", padding: "10px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <strong style={{ fontSize: "11px", color: "#16594d" }}>AI Surgical Evaluation</strong>
+              <span className="patient-status patient-status-active">82/100</span>
+            </div>
+            <p style={{ fontSize: "9px", color: "#5d736f", margin: "4px 0 8px" }}>Case {patient.caseId} · Automated assessment</p>
+            <button className="button button-quiet button-small" style={{ width: "100%", justifyContent: "center" }} onClick={() => onOpenCase(patient.caseId)}>
+              View Clinical Breakdown
+            </button>
+          </div>
+        </div>
+      )}
+
+      {subtab === "Reports" && (
+        <div className="patient-info-block">
+          <div className="patient-info-heading">
+            <strong>Clinical Reports</strong>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px", border: "1px solid #e2e8eb", borderRadius: "5px" }}>
+              <div>
+                <strong style={{ fontSize: "10px", display: "block" }}>Operative Evaluation Report</strong>
+                <span style={{ fontSize: "8px", color: "var(--text-muted)" }}>PDF · Generated 12 Jul 2024</span>
+              </div>
+              <button className="icon-button small" onClick={() => toast("Report download", { description: "Downloading operative report PDF" })}>
+                <Download size={13} />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div style={{ padding: "12px", borderTop: "1px solid #e9edef" }}>
+        <button className="button button-primary" style={{ width: "100%", justifyContent: "center" }} onClick={onOpen}>
+          Open Patient Profile <ChevronRight size={15} />
+        </button>
+      </div>
+    </aside>
+  );
 }
 
 function PatientProfilePage({ patientId }: { patientId: string }) {
   const [, navigate] = useLocation();
+  const [profileTab, setProfileTab] = useState<"Overview" | "Cases" | "Scans" | "Evaluations" | "Reports">("Overview");
+
   const patient = patients.find((item) => item.id.toLowerCase() === patientId.toLowerCase());
-  if (!patient) return <EmptyState icon={UserRound} title="Patient not found" description={`No patient record matches ${patientId}. Return to the patient registry to choose a valid record.`} />;
+  if (!patient) {
+    return (
+      <div style={{ padding: "40px 20px" }}>
+        <EmptyState
+          icon={UserRound}
+          title="Patient not found"
+          description={`No patient record matches ${patientId}. Return to the patient registry to choose a valid record.`}
+        />
+        <div style={{ textAlign: "center", marginTop: "16px" }}>
+          <button className="button button-primary" onClick={() => navigate("/patients")}>
+            <ChevronLeft size={15} /> Back to Patients
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   const patientCases = cases.filter((item) => item.patientId === patient.id);
-  return <><div className="back-link" onClick={() => navigate("/patients")}><ChevronLeft size={15} /> Back to patients</div><div className="profile-header"><div className="profile-identity"><div className="avatar avatar-xl" style={{ background: patient.accent }}>{patient.initials}</div><div><div className="eyebrow">Patient profile · {patient.id}</div><h1>{patient.name}</h1><p>{patient.age} years · {patient.sex === "F" ? "Female" : "Male"} · {patient.procedure}</p></div></div><div className="profile-actions"><button className="button button-quiet" onClick={() => toast("Profile export", { description: "A PDF profile export would be generated here." })}><Download size={15} /> Export profile</button><button className="button button-primary" onClick={() => navigate(`/cases/${patient.caseId}`)}><ClipboardList size={15} /> Open latest case</button></div></div><div className="profile-grid"><section className="panel profile-summary"><PanelHeading title="Patient information" meta="Last verified today" action={<button className="icon-button small"><MoreHorizontal size={16} /></button>} /><div className="info-grid"><InfoPair label="Patient ID" value={patient.id} mono /><InfoPair label="Date of birth" value="17 Mar 1997" /><InfoPair label="Primary service" value="Maxillofacial surgery" /><InfoPair label="Care pathway" value="Trauma · orbital" /><InfoPair label="Allergies" value="None recorded" /><InfoPair label="Consent status" value="On file · 28 Sep 2026" /></div></section><section className="panel profile-score"><div className="profile-score-top"><div><div className="eyebrow">Latest evaluation</div><h2>Post-operative outcome</h2><span>Case {patient.caseId} · 06 Oct 2026</span></div><StatusPill status={patient.status} /></div><div className="score-row"><ScoreRing score={8.8} label="overall" size="small" /><div className="score-notes"><div><span>Confidence</span><strong>94%</strong></div><div><span>Review status</span><strong>Clinician review</strong></div><div><span>Next action</span><strong>Confirm alignment finding</strong></div></div></div></section></div><div className="profile-grid profile-grid-lower"><section className="panel"><PanelHeading title="Encounter timeline" meta="5 events" action={<button className="text-button">View full history <ChevronRight size={14} /></button>} /><div className="timeline">{[["06 Oct · 09:42", "Post-op evaluation drafted", "Dr. Elena Okafor", "review", "Evaluation"], ["05 Oct · 15:18", "CT registration completed", "Imaging workflow", "complete", "Imaging"], ["30 Sep · 11:06", "Surgery / orbital floor repair", "Operating theatre 2", "complete", "Procedure"], ["28 Sep · 14:20", "Pre-op assessment signed", "Dr. Elena Okafor", "complete", "Encounter"], ["24 Sep · 10:12", "Case opened", "Trauma intake", "complete", "Intake"]].map(([date, title, detail, state, type], index) => <div className="timeline-item" key={title}><div className={`timeline-marker ${index === 0 ? "timeline-marker-active" : ""}`}>{index === 0 ? <Activity size={12} /> : <Check size={12} />}</div><div className="timeline-copy"><span className="timeline-date">{date}</span><div className="timeline-title-row"><strong>{title}</strong><span className="timeline-type">{type}</span></div><small>{detail}</small></div><StatusPill status={state as Status} compact /></div>)}</div></section><section className="panel"><PanelHeading title="Case history" meta={`${patientCases.length || 1} linked case`} action={<button className="icon-button small"><MoreHorizontal size={16} /></button>} />{patientCases.length ? patientCases.map((item) => <button className="linked-case" key={item.id} onClick={() => navigate(`/cases/${item.id}`)}><div><span className="case-key">{item.id}</span><strong>{item.procedure}</strong><small>Updated {item.updated}</small></div><div className="linked-case-score"><strong>{item.score.toFixed(1)}</strong><StatusPill status={item.status} compact /></div><ChevronRight size={15} /></button>) : <EmptyState icon={ClipboardList} title="No linked cases" description="Cases will appear here once the patient is evaluated." />}</section></div></>;
+
+  return (
+    <div className="patient-profile-page">
+      <div className="back-link" onClick={() => navigate("/patients")}>
+        <ChevronLeft size={15} /> Back to patients
+      </div>
+
+      <div className="profile-header">
+        <div className="profile-identity">
+          <div className="avatar avatar-xl" style={{ background: patient.accent }}>
+            {patient.initials}
+          </div>
+          <div>
+            <div className="eyebrow">Patient profile · {patient.id}</div>
+            <h1>{patient.name}</h1>
+            <p>
+              {patient.age} years · {patient.sex === "F" ? "Female" : "Male"} · {patient.procedure}
+            </p>
+          </div>
+        </div>
+        <div className="profile-actions">
+          <button
+            className="button button-quiet"
+            onClick={() => toast("Profile export", { description: `PDF profile export generated for ${patient.name} (${patient.id}).` })}
+          >
+            <Download size={15} /> Export profile
+          </button>
+          <button
+            className="button button-primary"
+            onClick={() => navigate(`/cases/${patient.caseId}`)}
+          >
+            <ClipboardList size={15} /> Open latest case
+          </button>
+        </div>
+      </div>
+
+      {/* Wireframe Section 12 & 23 Subtabs */}
+      <div className="patient-profile-tabs" role="tablist" aria-label="Patient profile sections">
+        {(["Overview", "Cases", "Scans", "Evaluations", "Reports"] as const).map((tab) => (
+          <button
+            key={tab}
+            role="tab"
+            aria-selected={profileTab === tab}
+            className={`patient-profile-tab ${profileTab === tab ? "patient-profile-tab-active" : ""}`}
+            onClick={() => setProfileTab(tab)}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
+
+      {profileTab === "Overview" && (
+        <>
+          <div className="profile-grid">
+            <section className="panel profile-summary">
+              <PanelHeading
+                title="Patient information"
+                meta="Primary demographics"
+                action={
+                  <button
+                    className="text-button"
+                    onClick={() => toast("Edit demographics", { description: "Demographics editor opened." })}
+                  >
+                    Edit
+                  </button>
+                }
+              />
+              <div className="info-grid">
+                <InfoPair label="Full Name" value={patient.name} />
+                <InfoPair label="Patient ID" value={patient.id} mono />
+                <InfoPair label="Age / Sex" value={`${patient.age} / ${patient.sex === "M" ? "Male" : "Female"}`} />
+                <InfoPair label="Phone" value={patient.phone} />
+                <InfoPair label="Email" value={patient.email} />
+                <InfoPair label="Address" value={patient.address} />
+                <InfoPair label="Blood Group" value={patient.bloodGroup} />
+                <InfoPair label="Allergies" value={patient.allergies} />
+              </div>
+            </section>
+
+            <section className="panel profile-score">
+              <div className="profile-score-top">
+                <div>
+                  <div className="eyebrow">Active Case Summary</div>
+                  <h2>{patient.caseId}</h2>
+                  <span>{patient.procedure}</span>
+                </div>
+                <span className={`patient-status patient-status-${patient.status.toLowerCase().replace(" ", "-")}`}>
+                  <span />
+                  {patient.status}
+                </span>
+              </div>
+              <div className="score-row">
+                <ScoreRing score={8.2} label="alignment" size="small" />
+                <div className="score-notes">
+                  <div>
+                    <span>Confidence</span>
+                    <strong>91%</strong>
+                  </div>
+                  <div>
+                    <span>Review status</span>
+                    <strong>Ready for review</strong>
+                  </div>
+                  <div>
+                    <span>Next action</span>
+                    <strong>Confirm reduction</strong>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div className="profile-grid profile-grid-lower">
+            <section className="panel">
+              <PanelHeading
+                title="Recent Scans"
+                meta="Diagnostic imaging"
+                action={
+                  <button className="text-button" onClick={() => setProfileTab("Scans")}>
+                    View all scans <ChevronRight size={14} />
+                  </button>
+                }
+              />
+              <div className="patient-scan-grid" style={{ padding: "16px", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
+                <div onClick={() => toast("DICOM Viewer", { description: "Opening Pre-op CT in 3D viewer" })} style={{ cursor: "pointer" }}>
+                  <ImagingMini label="Pre-op CT" accent="slate" />
+                  <span style={{ fontSize: "8px", color: "var(--text-muted)", display: "block", marginTop: "4px", textAlign: "center" }}>10 Jul 2024</span>
+                </div>
+                <div onClick={() => toast("DICOM Viewer", { description: "Opening Post-op CT in 3D viewer" })} style={{ cursor: "pointer" }}>
+                  <ImagingMini label="Post-op CT" accent="teal" after />
+                  <span style={{ fontSize: "8px", color: "var(--text-muted)", display: "block", marginTop: "4px", textAlign: "center" }}>12 Jul 2024</span>
+                </div>
+                <div onClick={() => toast("DICOM Viewer", { description: "Opening 3D Reconstruction in 3D viewer" })} style={{ cursor: "pointer" }}>
+                  <ImagingMini label="3D Recon." accent="slate" after />
+                  <span style={{ fontSize: "8px", color: "var(--text-muted)", display: "block", marginTop: "4px", textAlign: "center" }}>12 Jul 2024</span>
+                </div>
+              </div>
+            </section>
+
+            <section className="panel">
+              <PanelHeading
+                title="Active Cases"
+                meta={`${patientCases.length} linked case${patientCases.length === 1 ? "" : "s"}`}
+                action={
+                  <button className="text-button" onClick={() => setProfileTab("Cases")}>
+                    View all <ChevronRight size={14} />
+                  </button>
+                }
+              />
+              <div style={{ padding: "12px" }}>
+                {patientCases.length ? (
+                  patientCases.map((item) => (
+                    <button
+                      className="linked-case"
+                      key={item.id}
+                      onClick={() => navigate(`/cases/${item.id}`)}
+                    >
+                      <div>
+                        <span className="case-key">{item.id}</span>
+                        <strong>{item.procedure}</strong>
+                        <small>Updated {item.updated}</small>
+                      </div>
+                      <div className="linked-case-score">
+                        <strong>{item.score.toFixed(1)}</strong>
+                        <StatusPill status={item.status} compact />
+                      </div>
+                      <ChevronRight size={15} />
+                    </button>
+                  ))
+                ) : (
+                  <EmptyState
+                    icon={ClipboardList}
+                    title="No linked cases"
+                    description="Cases will appear here once the patient is admitted."
+                  />
+                )}
+              </div>
+            </section>
+          </div>
+        </>
+      )}
+
+      {profileTab === "Cases" && (
+        <section className="panel" style={{ padding: "20px" }}>
+          <PanelHeading
+            title="Complete Case History"
+            meta={`${patientCases.length} recorded surgical episode${patientCases.length === 1 ? "" : "s"}`}
+            action={
+              <button
+                className="button button-primary button-small"
+                onClick={() => toast("New Case", { description: `Linking new case record to ${patient.name}` })}
+              >
+                <Plus size={14} /> New Case
+              </button>
+            }
+          />
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "14px" }}>
+            {patientCases.map((item) => (
+              <button
+                className="linked-case"
+                key={item.id}
+                onClick={() => navigate(`/cases/${item.id}`)}
+                style={{ padding: "14px", border: "1px solid #dce5ea" }}
+              >
+                <div>
+                  <span className="case-key">{item.id}</span>
+                  <strong>{item.procedure}</strong>
+                  <small>Evaluator: {item.evaluator} · Updated {item.updated}</small>
+                </div>
+                <div className="linked-case-score">
+                  <span className="eyebrow" style={{ marginRight: "8px" }}>Score</span>
+                  <strong>{item.score.toFixed(1)}/10</strong>
+                  <StatusPill status={item.status} compact />
+                </div>
+                <ChevronRight size={15} />
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {profileTab === "Scans" && (
+        <section className="panel" style={{ padding: "20px" }}>
+          <PanelHeading
+            title="DICOM Imaging & Scans"
+            meta="Multislice CT series and 3D surface files"
+            action={
+              <button
+                className="button button-primary button-small"
+                onClick={() => toast("Upload DICOM", { description: "Select local DICOM folder" })}
+              >
+                <Plus size={14} /> Upload Scan
+              </button>
+            }
+          />
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "14px", marginTop: "16px" }}>
+            {[
+              { label: "Pre-op Axial Slice", date: "10 Jul 2024", accent: "slate" },
+              { label: "Pre-op Coronal View", date: "10 Jul 2024", accent: "teal" },
+              { label: "Post-op Helical CT", date: "12 Jul 2024", accent: "teal", after: true },
+              { label: "3D Bone Reconstruction", date: "12 Jul 2024", accent: "slate", after: true },
+              { label: "Automated Segmentation", date: "12 Jul 2024", accent: "teal", after: true },
+            ].map((scan) => (
+              <div
+                key={scan.label}
+                className="panel"
+                style={{ padding: "10px", cursor: "pointer", border: "1px solid #e1e7ea" }}
+                onClick={() => toast("DICOM Viewer", { description: `Loading ${scan.label} into interactive viewer.` })}
+              >
+                <ImagingMini label={scan.label} accent={scan.accent} after={scan.after} />
+                <div style={{ marginTop: "8px", display: "flex", justifyContent: "space-between", fontSize: "10px" }}>
+                  <strong>{scan.label}</strong>
+                  <span style={{ color: "var(--text-muted)" }}>{scan.date}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {profileTab === "Evaluations" && (
+        <section className="panel" style={{ padding: "20px" }}>
+          <PanelHeading
+            title="AI Evaluations & Clinical Scores"
+            meta="Surgical plan comparison"
+          />
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "16px" }}>
+            <div style={{ padding: "16px", border: "1px solid #dcebe6", borderRadius: "8px", background: "#fbfdfc" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div>
+                  <span className="eyebrow">Case {patient.caseId}</span>
+                  <h3 style={{ margin: "4px 0", fontSize: "16px", color: "var(--navy-dark)" }}>Post-Operative Reduction Evaluation</h3>
+                  <p style={{ margin: 0, fontSize: "12px", color: "var(--text-muted)" }}>Evaluated on 12 Jul 2024 by AI Module · Confirmed by Dr. Rahul Mehta</p>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ fontSize: "28px", fontWeight: 700, color: "var(--teal)", fontFamily: "JetBrains Mono, monospace" }}>8.2 / 10</div>
+                  <span className="patient-status patient-status-active">High Confidence (91%)</span>
+                </div>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px", marginTop: "16px", paddingTop: "12px", borderTop: "1px solid #edf2f0" }}>
+                <div><span style={{ fontSize: "10px", color: "var(--text-muted)" }}>Orbital Floor Alignment</span><strong style={{ display: "block", fontSize: "12px", marginTop: "2px" }}>8.5 / 10 (Good)</strong></div>
+                <div><span style={{ fontSize: "10px", color: "var(--text-muted)" }}>Facial Symmetry Index</span><strong style={{ display: "block", fontSize: "12px", marginTop: "2px" }}>7.8 / 10 (Within 2mm)</strong></div>
+                <div><span style={{ fontSize: "10px", color: "var(--text-muted)" }}>Hardware Stability</span><strong style={{ display: "block", fontSize: "12px", marginTop: "2px" }}>8.0 / 10 (Optimal)</strong></div>
+                <div><span style={{ fontSize: "10px", color: "var(--text-muted)" }}>Occlusion Preservation</span><strong style={{ display: "block", fontSize: "12px", marginTop: "2px" }}>7.5 / 10 (Satisfactory)</strong></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {profileTab === "Reports" && (
+        <section className="panel" style={{ padding: "20px" }}>
+          <PanelHeading
+            title="Generated Clinical Reports"
+            meta="Formal documentation"
+            action={
+              <button
+                className="button button-primary button-small"
+                onClick={() => navigate("/reports/new")}
+              >
+                <Plus size={14} /> New Report
+              </button>
+            }
+          />
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "16px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px", border: "1px solid #dce3e8", borderRadius: "6px" }}>
+              <div>
+                <strong style={{ fontSize: "12px", color: "var(--navy-dark)" }}>Post-Operative Trauma Evaluation Report — Case {patient.caseId}</strong>
+                <p style={{ margin: "3px 0 0", fontSize: "11px", color: "var(--text-muted)" }}>Author: Dr. Rahul Mehta · Generated 12 Jul 2024 · Format: PDF (Signed)</p>
+              </div>
+              <div style={{ display: "flex", gap: "8px" }}>
+                <button
+                  className="button button-quiet button-small"
+                  onClick={() => navigate("/reports/MX-2407")}
+                >
+                  <FileText size={14} /> Preview
+                </button>
+                <button
+                  className="button button-quiet button-small"
+                  onClick={() => toast("Download PDF", { description: `Downloading formal report for ${patient.name}` })}
+                >
+                  <Download size={14} /> Download
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+    </div>
+  );
 }
 
 function InfoPair({ label, value, mono = false }: { label: string; value: string; mono?: boolean }) {
@@ -766,7 +1718,7 @@ function Criterion({ label, score, state, detail }: { label: string; score: stri
   return <div className="criterion-row"><div><strong>{label}</strong><small>{detail}</small></div><div className="criterion-meter"><div className="criterion-track"><span className={state === "watch" ? "meter-watch" : ""} style={{ width: `${Number(score) * 10}%` }} /></div><strong>{score}</strong></div></div>;
 }
 
-function ReviewRow({ label, detail, confidence, state, onEdit }: { label: string; detail: string; confidence: string; state: string; onEdit?: () => void }) {
+function ReviewRow({ label, detail, confidence, state, tone, onEdit }: { label: string; detail: string; confidence: string; state: string; tone?: string; onEdit?: () => void }) {
   const needsReview = state === "Needs review";
   return <div className="review-row"><div className={`review-check ${needsReview ? "review-check-open" : ""}`}>{needsReview ? <AlertCircle size={15} /> : <Check size={15} />}</div><div><strong>{label}</strong><small>{detail}</small></div><span className={`confidence-chip ${needsReview ? "confidence-chip-amber" : ""}`}>{confidence}</span><span className={`review-state ${needsReview ? "review-state-open" : ""}`}>{state}</span>{needsReview ? <button className="button button-quiet button-small" onClick={onEdit}><Pencil size={13} /> Review</button> : <CheckCircle2 size={16} className="review-done" />}</div>;
 }
