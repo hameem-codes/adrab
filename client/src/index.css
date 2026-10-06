@@ -551,10 +551,12 @@ body, button, input, textarea, select { font-family: "Inter", ui-sans-serif, sys
 .case-wire-table tbody tr:hover, .case-row-selected { background: #f4f9f7; }
 .case-wire-table tbody tr.case-row-selected { box-shadow: inset 2px 0 0 var(--teal); }
 .case-wire-table td strong { color: #263845; font-size: 9px; }
-.case-stage { display: inline-flex; min-width: 48px; align-items: center; justify-content: center; padding: 4px 7px; border: 1px solid #c7e0d6; border-radius: 4px; background: #edf8f3; color: #227665; font-size: 8px; font-weight: 700; white-space: nowrap; }
-.case-stage-preop, .case-stage-postop { border-color: #d6e0e4; background: #f1f4f5; color: #637580; }
-.case-stage-review { border-color: #d9e1dd; background: #f1f4f2; color: #5f706b; }
-.case-stage-completed { border-color: #c7e0d6; background: #edf8f3; color: #227665; }
+.case-stage { display: inline-flex; min-width: 48px; align-items: center; justify-content: center; padding: 4px 7px; border-radius: 4px; font-size: 8px; font-weight: 700; white-space: nowrap; }
+.case-stage-preop { background: #E0F2FE; color: #0284C7; }
+.case-stage-postop { background: #EDE9FE; color: #7C3AED; }
+.case-stage-evaluation { background: #D1FAE5; color: #059669; }
+.case-stage-review { background: #FEF3C7; color: #D97706; }
+.case-stage-completed { background: #DCFCE7; color: #16A34A; }
 .case-table-footer { min-height: 48px; }
 .case-detail-panel-wire { min-width: 0; overflow: hidden; background: #fff; }
 .case-detail-wire-head { display: flex; min-height: 55px; align-items: center; gap: 8px; padding: 10px 12px; border-bottom: 1px solid #e9edef; }
