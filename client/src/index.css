@@ -174,8 +174,24 @@ kbd { padding: 0 4px; border: 1px solid #d7ddd7; border-bottom-color: #c4ccc5; b
 .dashboard-quick-actions .quick-icon { background: #edf3f7; color: #4b6b82; }
 .dashboard-quick-actions .quick-action strong { color: #2b3b49; }
 .dashboard-quick-actions .quick-action small { color: #86929f; }
+.date-range-dropdown { position: absolute; top: calc(100% + 6px); right: 0; z-index: 50; min-width: 150px; padding: 5px; border: 1px solid #dce3ea; border-radius: 8px; background: #fff; box-shadow: 0 10px 25px rgba(28,45,62,.12); display: flex; flex-direction: column; gap: 2px; }
+.date-range-item { padding: 7px 11px; border: 0; border-radius: 5px; background: transparent; color: #354756; font-size: 11px; text-align: left; cursor: pointer; transition: background .15s ease; }
+.date-range-item:hover { background: #f0f4f8; }
+.date-range-item.active { background: #e6f0f7; color: #1c5277; font-weight: 650; }
+.clinical-table tbody tr.row-selected { background: #f0f7f5; box-shadow: inset 3px 0 0 var(--teal); }
+.pending-review-badge { margin-left: auto; border: 1px solid #d8e5e1; background: #f0f8f5; color: #1f6759; font-weight: 650; }
+.pending-review-badge:hover { background: #e0f2ed; }
+.imaging-tile-active .imaging-mini { border-color: var(--teal); box-shadow: 0 0 0 2px rgba(12,124,120,.25); }
+.rail-disclaimer { margin: 6px 10px 0; padding: 8px 10px; border: 1px dashed #ced8e2; border-radius: 7px; background: #f5f8fa; display: flex; flex-direction: column; gap: 2px; font-size: 8px; }
+.rail-disclaimer strong { color: #435565; font-size: 8.5px; }
+.rail-disclaimer span { color: #7f8f9e; }
+.topbar-profile { display: flex; align-items: center; gap: 8px; padding: 4px 8px; border: 1px solid transparent; border-radius: 20px; cursor: pointer; transition: background .15s ease, border-color .15s ease; }
+.topbar-profile:hover { border-color: #d8e1e8; background: #fff; }
+.topbar-profile-name { color: #2c3e4e; font-size: 11px; font-weight: 650; }
+.topbar-profile-chevron { color: #8795a2; }
+.dashboard-mobile-list { display: none; }
+.mobile-bottom-nav { display: none; }
 
-/* Tables, registries and support surfaces */
 .table-wrap { overflow-x: auto; }
 .clinical-table { width: 100%; border-collapse: collapse; text-align: left; }
 .clinical-table th { padding: 0 19px 9px; border-bottom: 1px solid #ebece6; color: #84908b; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 8px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
@@ -608,4 +624,25 @@ body, button, input, textarea, select { font-family: "Inter", ui-sans-serif, sys
   .patient-mobile-copy small { overflow: hidden; color: #71818a; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 7px; text-overflow: ellipsis; white-space: nowrap; }
   .patient-mobile-copy em { color: #89979a; font-size: 7px; font-style: normal; }
   .patient-mobile-row .patient-status { min-width: 46px; padding: 4px 5px; font-size: 7px; }
+
+  /* Dashboard mobile layout additions */
+  .dashboard-desktop-table { display: none; }
+  .dashboard-mobile-list { display: flex; flex-direction: column; }
+  .dashboard-mobile-card { display: flex; flex-direction: column; gap: 5px; padding: 11px 13px; border: 0; border-bottom: 1px solid #edf0f3; background: #fff; text-align: left; transition: background .15s ease; cursor: pointer; }
+  .dashboard-mobile-card:hover { background: #f7f9fb; }
+  .dashboard-mobile-card-head { display: flex; align-items: center; justify-content: space-between; }
+  .dashboard-mobile-card strong { color: #243545; font-size: 11px; }
+  .dashboard-mobile-card .procedure-text { color: #6a7c8e; font-size: 9.5px; }
+  .dashboard-mobile-card .finding-mobile-text { margin: 2px 0 0; color: #516474; font-size: 9.5px; }
+  .dashboard-mobile-card-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; color: #8c9ba8; font-size: 8.5px; }
+  .recent-imaging-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 9px; padding: 12px 14px 8px; -webkit-overflow-scrolling: touch; }
+  .imaging-tile { flex: 0 0 135px; scroll-snap-align: start; }
+  .imaging-tile .imaging-mini { height: 115px; }
+
+  /* Persistent Mobile Bottom Navigation */
+  .mobile-bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 40; display: flex; height: 56px; border-top: 1px solid #dce3ea; background: #fff; box-shadow: 0 -2px 10px rgba(28,45,62,.06); }
+  .mobile-nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; border: 0; background: transparent; color: #708191; font-size: 9px; font-weight: 600; padding: 4px 0; }
+  .mobile-nav-btn.active { color: var(--teal); }
+  .mobile-nav-btn svg { width: 17px; height: 17px; }
+  .topbar-profile-name, .topbar-profile-chevron { display: none; }
 }

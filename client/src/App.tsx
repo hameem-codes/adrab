@@ -240,16 +240,24 @@ function AppShell({ children }: { children: React.ReactNode }) {
         </nav>
         <div className="rail-bottom">
           <button className="nav-item" onClick={() => toast("Command palette opened", { description: "Jump to any part of the clinical workspace." })} title={collapsed ? "Command palette" : undefined}><Command size={17} /><span className="nav-item-label">Command palette</span><span className="shortcut">⌘K</span></button>
-          <div className="clinician-card"><div className="avatar avatar-teal">DR</div><div className="clinician-meta"><strong>Dr. Rahul Mehta</strong><span>Surgeon</span></div><MoreHorizontal size={16} className="clinician-more" /></div>
+          <div className="clinician-card" onClick={() => toast("Clinician Profile", { description: "Dr. Rahul Mehta · Senior Maxillofacial Surgeon" })} style={{ cursor: "pointer" }}><div className="avatar avatar-teal">DR</div><div className="clinician-meta"><strong>Dr. Rahul Mehta</strong><span>Surgeon</span></div><ChevronDown size={14} className="clinician-more" /></div>
+          {!collapsed && <div className="rail-disclaimer"><strong>Research Prototype</strong><span>Not for clinical use.</span></div>}
         </div>
       </aside>
       {mobileOpen && <button className="mobile-scrim" aria-label="Close navigation" onClick={() => setMobileOpen(false)} />}
       <section className="app-main">
         <header className="topbar">
           <div className="topbar-left"><button className="mobile-menu icon-button" onClick={() => setMobileOpen(true)} aria-label="Open navigation"><Menu size={18} /></button><div className="breadcrumb"><span>MaxFace-Eval</span><ChevronRight size={13} /><strong>{currentTitle}</strong></div></div>
-          <div className="topbar-actions"><button className="search-trigger" onClick={() => setCommandOpen(true)}><Search size={15} /><span>Search patients, cases or IDs...</span><kbd>⌘ K</kbd></button><button className="icon-button notification-button" onClick={() => toast("No new alerts", { description: "Your review queue is up to date." })} aria-label="Notifications"><Bell size={17} /><span className="notification-dot" /></button><button className="help-button" onClick={() => toast("Support centre", { description: "Clinical review guidance is available in the Knowledge base." })}><CircleHelp size={16} /><span>Help</span></button><div className="topbar-avatar avatar avatar-ink">DR</div></div>
+          <div className="topbar-actions"><button className="search-trigger" onClick={() => setCommandOpen(true)}><Search size={15} /><span>Search patients, cases or IDs...</span><kbd>⌘ K</kbd></button><button className="icon-button notification-button" onClick={() => toast("Notifications", { description: "2 pending surgeon evaluations awaiting sign-off." })} aria-label="Notifications"><Bell size={17} /><span className="notification-dot" /></button><button className="help-button" onClick={() => toast("Support centre", { description: "Clinical review guidance is available in the Knowledge base." })}><CircleHelp size={16} /><span>Help</span></button><div className="topbar-profile" onClick={() => toast("Profile menu", { description: "Signed in as Dr. Rahul Mehta (Surgeon)" })}><div className="topbar-avatar avatar avatar-ink">DR</div><span className="topbar-profile-name">Dr. Rahul Mehta</span><ChevronDown size={13} className="topbar-profile-chevron" /></div></div>
         </header>
         <main className="page-content">{children}</main>
+        <nav className="mobile-bottom-nav" aria-label="Mobile Navigation">
+          <button className={`mobile-nav-btn ${isActive("/") ? "active" : ""}`} onClick={() => navigate("/")}><LayoutDashboard size={18} /><span>Dashboard</span></button>
+          <button className={`mobile-nav-btn ${isActive("/patients") ? "active" : ""}`} onClick={() => navigate("/patients")}><UsersRound size={18} /><span>Patients</span></button>
+          <button className={`mobile-nav-btn ${isActive("/cases") ? "active" : ""}`} onClick={() => navigate("/cases")}><ClipboardList size={18} /><span>Cases</span></button>
+          <button className={`mobile-nav-btn ${isActive("/reports") ? "active" : ""}`} onClick={() => navigate("/reports")}><FileText size={18} /><span>Reports</span></button>
+          <button className="mobile-nav-btn" onClick={() => setMobileOpen(true)}><MoreHorizontal size={18} /><span>More</span></button>
+        </nav>
       </section>
       {commandOpen && <CommandPalette onClose={() => setCommandOpen(false)} onNavigate={(path) => { navigate(path); setCommandOpen(false); }} />}
     </div>
@@ -273,6 +281,11 @@ function MetricCard({ label, value, detail, trend, tone = "teal", icon: IconComp
 
 function DashboardPage() {
   const [, navigate] = useLocation();
+  const [dateRange, setDateRange] = useState("Last 30 days");
+  const [dateMenuOpen, setDateMenuOpen] = useState(false);
+  const [selectedCaseId, setSelectedCaseId] = useState<string | null>("MF-2024-001");
+  const [carouselIndex, setCarouselIndex] = useState(0);
+
   const recentCases = [
     { id: "MF-2024-001", patient: "Aman Verma", procedure: "Mandibular Fracture", stage: "Evaluation", tone: "evaluation", updated: "2 hours ago", target: "/cases/MX-2407" },
     { id: "MF-2024-002", patient: "Priya Sharma", procedure: "Zygomatic Fracture", stage: "Post-op", tone: "postop", updated: "5 hours ago", target: "/cases/MX-2399" },
@@ -281,30 +294,289 @@ function DashboardPage() {
     { id: "MF-2024-005", patient: "Vikram Singh", procedure: "Mandibular Fracture", stage: "Completed", tone: "completed", updated: "2 days ago", target: "/cases/MX-2310" },
   ];
   const pendingReviews = [
-    { id: "MF-2024-004", patient: "Sneha Patel", procedure: "Orbital Fracture", accent: "coral" },
-    { id: "MF-2024-007", patient: "Arjun Das", procedure: "Zygomatic Fracture", accent: "teal" },
-    { id: "MF-2024-010", patient: "Neha Reddy", procedure: "Mandibular Fracture", accent: "amber" },
-    { id: "MF-2024-011", patient: "Karan Mehta", procedure: "LeFort I", accent: "slate" },
+    { id: "MF-2024-004", patient: "Sneha Patel", procedure: "Orbital Fracture", accent: "coral", target: "/cases/MX-2407/review" },
+    { id: "MF-2024-007", patient: "Arjun Das", procedure: "Zygomatic Fracture", accent: "teal", target: "/cases/MX-2407/review" },
+    { id: "MF-2024-010", patient: "Neha Reddy", procedure: "Mandibular Fracture", accent: "amber", target: "/cases/MX-2407/review" },
+    { id: "MF-2024-011", patient: "Karan Mehta", procedure: "LeFort I", accent: "slate", target: "/cases/MX-2407/review" },
   ];
   const recentEvaluations = [
-    ["MF-2024-001", "Aman Verma", "Mandibular Fracture", "82", "Good alignment", "2 hours ago", "good"],
-    ["MF-2024-002", "Priya Sharma", "Zygomatic Fracture", "68", "Minor asymmetry", "5 hours ago", "fair"],
-    ["MF-2024-003", "Rohit Kumar", "LeFort I", "91", "Excellent reduction", "1 day ago", "good"],
-    ["MF-2024-004", "Sneha Patel", "Orbital Fracture", "74", "Hardware prominent", "1 day ago", "fair"],
-    ["MF-2024-005", "Vikram Singh", "Mandibular Fracture", "88", "Good functional outcome", "2 days ago", "good"],
+    ["MF-2024-001", "Aman Verma", "Mandibular Fracture", "82", "Good alignment", "2 hours ago", "good", "/cases/MX-2407/evaluation"],
+    ["MF-2024-002", "Priya Sharma", "Zygomatic Fracture", "68", "Minor asymmetry", "5 hours ago", "fair", "/cases/MX-2399/evaluation"],
+    ["MF-2024-003", "Rohit Kumar", "LeFort I", "91", "Excellent reduction", "1 day ago", "good", "/cases/MX-2374/evaluation"],
+    ["MF-2024-004", "Sneha Patel", "Orbital Fracture", "74", "Hardware prominent", "1 day ago", "fair", "/cases/MX-2361/evaluation"],
+    ["MF-2024-005", "Vikram Singh", "Mandibular Fracture", "88", "Good functional outcome", "2 days ago", "good", "/cases/MX-2310/evaluation"],
   ];
   const recentImaging = [
-    { id: "MF-2024-001", label: "Pre-op CT", accent: "slate" },
-    { id: "MF-2024-002", label: "Segmentation", accent: "teal" },
-    { id: "MF-2024-003", label: "Post-op CT", accent: "coral" },
-    { id: "MF-2024-004", label: "Pre-op CT", accent: "amber" },
+    { id: "MF-2024-001", label: "Pre-op CT", accent: "slate", target: "/cases/MX-2407/viewer" },
+    { id: "MF-2024-002", label: "Segmentation", accent: "teal", target: "/cases/MX-2399/viewer" },
+    { id: "MF-2024-003", label: "Post-op CT", accent: "coral", target: "/cases/MX-2374/viewer" },
+    { id: "MF-2024-004", label: "Pre-op CT", accent: "amber", target: "/cases/MX-2361/viewer" },
   ];
-  return <div className="dashboard-page wireframe-dashboard"><PageHeader eyebrow="Research prototype · not for clinical decision-making" title="Dashboard" description="Overview of cases, evaluations and system activity" actions={<button className="button button-quiet" onClick={() => toast("Date range", { description: "Showing the last 30 days of workspace activity." })}><CalendarDays size={15} /> Last 30 days <ChevronDown size={13} /></button>} />
-    <div className="metric-grid"><MetricCard label="Active cases" value="24" detail="12% vs last month" trend="up" icon={ClipboardList} /><MetricCard label="Pending reviews" value="12" detail="8% vs last month" trend="down" tone="amber" icon={ShieldCheck} /><MetricCard label="Evaluations completed" value="97" detail="21% vs last month" trend="up" tone="ink" icon={BarChart3} /><MetricCard label="Total patients" value="86" detail="10% vs last month" trend="up" tone="coral" icon={UsersRound} /></div>
-    <div className="dashboard-wire-grid"><section className="panel wire-panel recent-cases-panel"><PanelHeading title="Recent Cases" meta="Latest activity across the workspace" action={<button className="text-button" onClick={() => navigate("/cases")}>View all <ChevronRight size={14} /></button>} /><div className="table-wrap"><table className="clinical-table wire-table"><thead><tr><th>Case ID</th><th>Patient Name</th><th>Procedure</th><th>Stage</th><th>Updated</th><th>Actions</th></tr></thead><tbody>{recentCases.map((item) => <tr key={item.id} onClick={() => navigate(item.target)}><td><span className="case-key">{item.id}</span></td><td><strong>{item.patient}</strong></td><td><span className="procedure-cell">{item.procedure}</span></td><td><StageBadge label={item.stage} tone={item.tone} /></td><td><span className="updated-cell">{item.updated}</span></td><td><button className="icon-button small" onClick={(event) => { event.stopPropagation(); toast("Case actions", { description: `${item.id} actions are ready in the full application.` }); }}><MoreHorizontal size={15} /></button></td></tr>)}</tbody></table></div></section><section className="panel wire-panel pending-panel"><PanelHeading title="Pending Surgeon Reviews" meta="Cases flagged for review" action={<button className="text-button" onClick={() => navigate("/cases?review=pending")}>View all <ChevronRight size={14} /></button>} /><div className="pending-review-list">{pendingReviews.map((item) => <button className="pending-review-row" key={item.id} onClick={() => navigate("/cases/MX-2407/review")}><ImagingMini label="" accent={item.accent} /><span className="pending-review-copy"><strong>{item.id}</strong><span>{item.patient}</span><small>{item.procedure}</small></span><StageBadge label="Review" tone="review" /><MoreHorizontal size={15} className="pending-more" /></button>)}</div></section></div>
-    <div className="dashboard-wire-bottom"><section className="panel wire-panel"><PanelHeading title="Recent Evaluations" meta="Completed evaluations with score and key findings" action={<button className="text-button" onClick={() => navigate("/reports")}>View all <ChevronRight size={14} /></button>} /><div className="table-wrap"><table className="clinical-table wire-table evaluation-table"><thead><tr><th>Case ID</th><th>Patient Name</th><th>Procedure</th><th>Score</th><th>Key Findings</th><th>Date</th></tr></thead><tbody>{recentEvaluations.map(([id, patient, procedure, score, finding, date, tone]) => <tr key={id}><td><span className="case-key">{id}</span></td><td><strong>{patient}</strong></td><td><span className="procedure-cell">{procedure}</span></td><td><ScoreBadge score={score} tone={tone} /></td><td><span className="finding-text">{finding}</span></td><td><span className="updated-cell">{date}</span></td></tr>)}</tbody></table></div></section><section className="panel wire-panel imaging-panel"><PanelHeading title="Recent Imaging" meta="Quick preview of recent scans" action={<button className="text-button" onClick={() => navigate("/cases/MX-2407/viewer")}>View all <ChevronRight size={14} /></button>} /><div className="recent-imaging-grid">{recentImaging.map((item) => <button className="imaging-tile" key={item.id} onClick={() => navigate("/cases/MX-2407/viewer")}><ImagingMini label={item.label} accent={item.accent} large /><span className="imaging-tile-id">{item.id}</span><small>{item.label}</small></button>)}</div><div className="carousel-dots"><span className="active" /><span /><span /><span /><span /></div></section></div>
-    <section className="dashboard-quick-actions"><div className="quick-actions-heading"><strong>Quick Actions</strong><span>Primary actions for common tasks</span></div><QuickAction icon={UserRound} label="New Patient" detail="Create a new patient record" onClick={() => toast("New patient", { description: "Patient intake is staged for the full application." })} /><QuickAction icon={ClipboardList} label="New Case" detail="Start a new case" onClick={() => navigate("/cases")} /><QuickAction icon={ImageIcon} label="Upload Imaging" detail="Upload DICOM or images" onClick={() => toast("Upload imaging", { description: "DICOM upload is staged for the full application." })} /><QuickAction icon={FileBarChart2} label="Generate Report" detail="Create evaluation report" onClick={() => navigate("/reports/new")} /></section>
-  </div>;
+
+  return (
+    <div className="dashboard-page wireframe-dashboard">
+      <PageHeader
+        eyebrow="Research prototype · not for clinical decision-making"
+        title="Dashboard"
+        description="Overview of cases, evaluations and system activity"
+        actions={
+          <div style={{ position: "relative" }}>
+            <button className="button button-quiet" onClick={() => setDateMenuOpen(!dateMenuOpen)}>
+              <CalendarDays size={15} /> {dateRange} <ChevronDown size={13} />
+            </button>
+            {dateMenuOpen && (
+              <div className="date-range-dropdown">
+                {["Last 7 days", "Last 30 days", "Last 90 days", "Custom range"].map((range) => (
+                  <button
+                    key={range}
+                    className={`date-range-item ${dateRange === range ? "active" : ""}`}
+                    onClick={() => {
+                      setDateRange(range);
+                      setDateMenuOpen(false);
+                      toast("Date range updated", { description: `Filtering workspace by ${range}` });
+                    }}
+                  >
+                    {range}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        }
+      />
+      <div className="metric-grid">
+        <MetricCard label="Active Cases" value="24" detail="12% vs last month" trend="up" icon={ClipboardList} />
+        <MetricCard label="Pending Reviews" value="12" detail="8% vs last month" trend="down" tone="amber" icon={ShieldCheck} />
+        <MetricCard label="Evaluations Completed" value="97" detail="21% vs last month" trend="up" tone="ink" icon={BarChart3} />
+        <MetricCard label="Total Patients" value="86" detail="10% vs last month" trend="up" tone="coral" icon={UsersRound} />
+      </div>
+
+      <div className="dashboard-wire-grid">
+        <section className="panel wire-panel recent-cases-panel">
+          <PanelHeading
+            title="Recent Cases"
+            meta="Latest activity across the workspace"
+            action={<button className="text-button" onClick={() => navigate("/cases")}>View all <ChevronRight size={14} /></button>}
+          />
+          <div className="table-wrap dashboard-desktop-table">
+            <table className="clinical-table wire-table">
+              <thead>
+                <tr>
+                  <th>Case ID</th>
+                  <th>Patient Name</th>
+                  <th>Procedure</th>
+                  <th>Stage</th>
+                  <th>Updated</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentCases.map((item) => (
+                  <tr
+                    key={item.id}
+                    className={selectedCaseId === item.id ? "row-selected" : ""}
+                    onClick={() => {
+                      setSelectedCaseId(item.id);
+                      navigate(item.target);
+                    }}
+                  >
+                    <td><span className="case-key">{item.id}</span></td>
+                    <td><strong>{item.patient}</strong></td>
+                    <td><span className="procedure-cell">{item.procedure}</span></td>
+                    <td><StageBadge label={item.stage} tone={item.tone} /></td>
+                    <td><span className="updated-cell">{item.updated}</span></td>
+                    <td>
+                      <button
+                        className="icon-button small"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          setSelectedCaseId(item.id);
+                          navigate(item.target);
+                        }}
+                        title="Open Case"
+                      >
+                        <MoreHorizontal size={15} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {/* Mobile compact representation */}
+          <div className="dashboard-mobile-list">
+            {recentCases.map((item) => (
+              <button
+                key={item.id}
+                className="dashboard-mobile-card"
+                onClick={() => navigate(item.target)}
+              >
+                <div className="dashboard-mobile-card-head">
+                  <span className="case-key">{item.id}</span>
+                  <StageBadge label={item.stage} tone={item.tone} />
+                </div>
+                <strong>{item.patient}</strong>
+                <span className="procedure-text">{item.procedure}</span>
+                <div className="dashboard-mobile-card-foot">
+                  <span>{item.updated}</span>
+                  <ChevronRight size={14} />
+                </div>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="panel wire-panel pending-panel">
+          <PanelHeading
+            title="Pending Surgeon Reviews"
+            meta="Cases flagged for review"
+            action={<button className="text-button" onClick={() => navigate("/cases")}>View all <ChevronRight size={14} /></button>}
+          />
+          <div className="pending-review-list">
+            {pendingReviews.map((item) => (
+              <button
+                className="pending-review-row"
+                key={item.id}
+                onClick={() => navigate(item.target)}
+              >
+                <ImagingMini label="" accent={item.accent} />
+                <span className="pending-review-copy">
+                  <strong>{item.id}</strong>
+                  <span>{item.patient}</span>
+                  <small>{item.procedure}</small>
+                </span>
+                <span className="button button-quiet button-small pending-review-badge">Review</span>
+                <MoreHorizontal size={15} className="pending-more" />
+              </button>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      <div className="dashboard-wire-bottom">
+        <section className="panel wire-panel">
+          <PanelHeading
+            title="Recent Evaluations"
+            meta="Completed evaluations with score and key findings"
+            action={<button className="text-button" onClick={() => navigate("/reports")}>View all <ChevronRight size={14} /></button>}
+          />
+          <div className="table-wrap dashboard-desktop-table">
+            <table className="clinical-table wire-table evaluation-table">
+              <thead>
+                <tr>
+                  <th>Case ID</th>
+                  <th>Patient Name</th>
+                  <th>Procedure</th>
+                  <th>Score</th>
+                  <th>Key Findings</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentEvaluations.map(([id, patient, procedure, score, finding, date, tone, target]) => (
+                  <tr key={id} onClick={() => navigate(target)} style={{ cursor: "pointer" }}>
+                    <td><span className="case-key">{id}</span></td>
+                    <td><strong>{patient}</strong></td>
+                    <td><span className="procedure-cell">{procedure}</span></td>
+                    <td><ScoreBadge score={score} tone={tone} /></td>
+                    <td><span className="finding-text">{finding}</span></td>
+                    <td><span className="updated-cell">{date}</span></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {/* Mobile Evaluations List */}
+          <div className="dashboard-mobile-list">
+            {recentEvaluations.map(([id, patient, procedure, score, finding, date, tone, target]) => (
+              <button
+                key={id}
+                className="dashboard-mobile-card"
+                onClick={() => navigate(target)}
+              >
+                <div className="dashboard-mobile-card-head">
+                  <span className="case-key">{id}</span>
+                  <ScoreBadge score={score} tone={tone} />
+                </div>
+                <strong>{patient}</strong>
+                <span className="procedure-text">{procedure}</span>
+                <p className="finding-mobile-text">{finding}</p>
+                <div className="dashboard-mobile-card-foot">
+                  <span>{date}</span>
+                  <ChevronRight size={14} />
+                </div>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="panel wire-panel imaging-panel">
+          <PanelHeading
+            title="Recent Imaging"
+            meta="Quick preview of recent scans"
+            action={<button className="text-button" onClick={() => navigate("/cases/MX-2407/viewer")}>View all <ChevronRight size={14} /></button>}
+          />
+          <div className="recent-imaging-grid">
+            {recentImaging.map((item, idx) => (
+              <button
+                className={`imaging-tile ${carouselIndex === idx ? "imaging-tile-active" : ""}`}
+                key={item.id}
+                onClick={() => {
+                  setCarouselIndex(idx);
+                  navigate(item.target);
+                }}
+              >
+                <ImagingMini label={item.label} accent={item.accent} large />
+                <span className="imaging-tile-id">{item.id}</span>
+                <small>{item.label}</small>
+              </button>
+            ))}
+          </div>
+          <div className="carousel-dots">
+            {recentImaging.map((_, idx) => (
+              <span
+                key={idx}
+                className={carouselIndex === idx ? "active" : ""}
+                onClick={() => setCarouselIndex(idx)}
+                style={{ cursor: "pointer" }}
+              />
+            ))}
+          </div>
+        </section>
+      </div>
+
+      <section className="dashboard-quick-actions">
+        <div className="quick-actions-heading">
+          <strong>Quick Actions</strong>
+          <span>Primary actions for common tasks</span>
+        </div>
+        <QuickAction
+          icon={UserRound}
+          label="New Patient"
+          detail="Create a new patient record"
+          onClick={() => navigate("/patients")}
+        />
+        <QuickAction
+          icon={ClipboardList}
+          label="New Case"
+          detail="Start a new case"
+          onClick={() => navigate("/cases")}
+        />
+        <QuickAction
+          icon={ImageIcon}
+          label="Upload Imaging"
+          detail="Upload DICOM or images"
+          onClick={() => toast("Upload Imaging", { description: "DICOM upload modal is staged for the full application." })}
+        />
+        <QuickAction
+          icon={FileBarChart2}
+          label="Generate Report"
+          detail="Create evaluation report"
+          onClick={() => navigate("/reports/new")}
+        />
+      </section>
+    </div>
+  );
 }
 
 function StageBadge({ label, tone }: { label: string; tone: string }) {
@@ -312,7 +584,13 @@ function StageBadge({ label, tone }: { label: string; tone: string }) {
 }
 
 function ScoreBadge({ score, tone }: { score: string; tone: string }) {
-  return <span className={`score-badge score-${tone}`}>{score}</span>;
+  const numeric = Number.parseFloat(score);
+  const interpretation = numeric >= 80 ? "Excellent" : numeric >= 60 ? "Good" : numeric >= 40 ? "Fair" : "Poor";
+  return (
+    <span className={`score-badge score-${tone}`} title={`${score} — ${interpretation}`}>
+      {score}
+    </span>
+  );
 }
 
 function PanelHeading({ title, meta, action }: { title: string; meta?: string; action?: React.ReactNode }) {
