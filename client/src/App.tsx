@@ -658,7 +658,15 @@ function PatientsPage() {
     const matchesStatus = statusFilter === "All" || patient.status === statusFilter;
     const matchesMobileStatus = mobileStatusTab === "All" || patient.status === mobileStatusTab;
     const matchesProcedure = procedureFilter === "Procedure" || patient.procedure.toLowerCase().includes(procedureFilter.toLowerCase());
-    return matchesQuery && matchesStatus && matchesMobileStatus && matchesProcedure;
+    
+    let matchesDate = true;
+    if (dateFilter === "Last 7 days") {
+      matchesDate = !patient.lastVisit.includes("week") || patient.lastVisit.includes("1 week");
+    } else if (dateFilter === "Last 30 days") {
+      matchesDate = !patient.lastVisit.includes("month");
+    }
+
+    return matchesQuery && matchesStatus && matchesMobileStatus && matchesProcedure && matchesDate;
   });
 
   const selected = registryRows.find((patient) => patient.id === selectedId) ?? registryRows[0];
@@ -1143,7 +1151,7 @@ function PatientDetailPanel({
       {subtab === "Cases" && (
         <div className="patient-info-block">
           <div className="patient-info-heading">
-            <strong>Case History ({patient.cases})</strong>
+            <strong>Case History ({cases.filter((c) => c.patientId === patient.id).length})</strong>
             <button
               className="text-button"
               onClick={() => toast("New Case", { description: `Linking new case to ${patient.name}` })}
@@ -1151,19 +1159,21 @@ function PatientDetailPanel({
               + Add Case
             </button>
           </div>
-          {patient.cases > 0 ? (
+          {cases.filter((c) => c.patientId === patient.id).length > 0 ? (
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-              <button className="patient-case-card" onClick={() => onOpenCase(patient.caseId)}>
-                <span className="patient-case-thumb">
-                  <ImagingMini label="" accent="teal" />
-                </span>
-                <span>
-                  <strong>{patient.caseId}</strong>
-                  <small>{patient.procedure}</small>
-                  <em>Created 10 Jul 2024 · Last updated 2 hours ago</em>
-                </span>
-                <StageBadge label="Evaluation" tone="evaluation" />
-              </button>
+              {cases.filter((c) => c.patientId === patient.id).map((item) => (
+                <button key={item.id} className="patient-case-card" onClick={() => onOpenCase(item.id)}>
+                  <span className="patient-case-thumb">
+                    <ImagingMini label="" accent="teal" />
+                  </span>
+                  <span>
+                    <strong>{item.id}</strong>
+                    <small>{item.procedure}</small>
+                    <em>Last updated {item.updated}</em>
+                  </span>
+                  <StageBadge label={item.phase.split("·")[0].trim()} tone={item.status === "attention" ? "review" : item.status === "draft" ? "preop" : "evaluation"} />
+                </button>
+              ))}
             </div>
           ) : (
             <p style={{ fontSize: "11px", color: "var(--text-muted)" }}>No previous surgical cases recorded.</p>
